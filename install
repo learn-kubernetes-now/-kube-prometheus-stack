@@ -13,3 +13,31 @@ nano values.yaml
 helm install -n monitoring prometheus prometheus-community/kube-prometheus-stack -f values.yaml
 kubectl port-forward -n monitoring grafana-fcc55c57f-fhjfr 52222:3000
 helm upgrade -n monitoring prometheus prometheus-community/kube-prometheus-stack -f values.yaml
+
+
+----------------
+traefik.ingress
+----------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  tls:
+    - secretName: grafana-tls-secret
+      hosts:
+        - grafana.example.com
+  rules:
+    - host: grafana.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80
+
