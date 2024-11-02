@@ -18,6 +18,10 @@ helm upgrade -n monitoring prometheus prometheus-community/kube-prometheus-stack
 ----------------
 traefik.ingress
 ----------------
+#   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=grafana.example.com"
+#   kubectl create secret tls grafana-tls-secret --cert=tls.crt --key=tls.key -n monitoring
+
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
